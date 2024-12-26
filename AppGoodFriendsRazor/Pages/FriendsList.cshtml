@@ -1,0 +1,100 @@
+﻿@page
+@model MyApp.Namespace.FriendsListModel
+@{
+}
+
+<div class="container px-4 py-4" id="list-of-friends">
+    <h2 class="pb-2 border-bottom">List of friends</h2>
+
+    <p>These are my friends. You can seach by name or address. You can also view or edit all the details. Sad but
+        possible, if you have the right authorization you
+        could also remove a friened from my database. More fun is it to add a friend, which all my friends can do.</p>
+
+
+    <div class="row mb-2 text-center">
+        <div class="col-md-4 themed-grid-col">Name</div>
+        <div class="col-md-4 themed-grid-col">Address</div>
+        <div class="col-md-2 themed-grid-col">Info</div>
+        <div class="col-md-2 themed-grid-col">
+            <a href="#add-edit-friend" class="btn btn-success btn-sm" type="button">Add</a>
+        </div>
+    </div>
+    @foreach (var friend in Model.FriendsPerPage)
+    {
+        <div class="row mb-2 text-center">
+            <div class="col-md-4 themed-grid-col">
+                @friend.FirstName @friend.LastName
+                <div class="col-md-16">@friend.Email</div>
+            </div>
+            <div class="col-md-4 themed-grid-col">
+                @friend.Address.StreetAddress
+                <div class="col-md-16">@friend.Address.ZipCode @friend.Address.City </div>
+                <div class="col-md-16">@friend.Address.Country</div>
+            </div>
+            <div class="col-md-2 themed-grid-col">
+                @if (friend.Birthday != null) {
+                    <div class="col-md-16">Born: @friend.Birthday.Value.ToString("yyyy-MM-dd")</div>
+                }
+                
+                <div class="col-md-16">Pets: @friend.Pets.Count</div>
+                <div class="col-md-16">Quotes: @friend.Quotes.Count</div>
+            </div>
+            <div class="col-md-2 themed-grid-col">
+                <a asp-page="/FriendDetails" asp-route-id=@friend.FriendId class="btn btn-primary btn-sm" type="button">View</a>
+                <a asp-page="/EditFriendDetails" asp-route-friendId="@friend.FriendId" class="btn btn-secondary btn-sm" type="button">Edit</a>
+                <a href="#modals" class="btn btn-danger btn-sm" type="button">Delete</a>
+            </div>
+        </div>
+    }
+
+    <nav aria-label="Standard pagination example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" asp-page="/FriendsList" 
+                asp-route-pagenr="@Model.PrevPageNr" 
+                asp-route-country="@Model.Country" 
+                asp-route-city="@Model.City"
+                asp-route-nrOfFriends="@Model.TotalNumberOfFriends"
+                aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+
+
+
+            @for(int i = 1; i <= @Model.NrOfPages; i++){
+                <li class="page-item @(Model.ThisPageNr == (i - 1) ? "active" : "")">
+                <a class="page-link" asp-page="/FriendsList" 
+                asp-route-pagenr="@(i - 1)" 
+                asp-route-country="@Model.Country" 
+                asp-route-city="@Model.City"
+                asp-route-nrOfFriends="@Model.TotalNumberOfFriends" >@i</a>
+            </li>
+            }
+            <li class="page-item">
+                <a class="page-link" asp-page="/FriendsList" 
+                asp-route-pagenr="@Model.NextPageNr" 
+                asp-route-country="@Model.Country" 
+                asp-route-city="@Model.City"
+                asp-route-nrOfFriends="@Model.TotalNumberOfFriends" 
+                aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+</div>
+
+<div class="d-none">
+    @for(int i = 1; i <= @Model.NrOfPages; i++){
+                <li class="page-item"><a class="page-link" asp-page="/FriendsList" asp-route-pagenr="@(i-1)" asp-route-country="@Model.Country" asp-route-city="@Model.City">@i</a></li>
+            }
+            <li class="page-item">
+                <a class="page-link" asp-page="/FriendsList" asp-route-pagenr="@Model.NextPageNr" asp-route-country="@Model.Country" asp-route-city="@Model.City" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+</div>

@@ -1,0 +1,45 @@
+﻿@page
+@model MyApp.Namespace.CountriesModel
+@{
+}
+<div class="container px-4 py-4" id="friends-by-country">
+  <h2 class="pb-2 border-bottom">Friends by country</h2>
+  <p>Click in on a country below to see what cities my friends are living in.</p>
+
+  <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+
+    @foreach (var country in Model.FriendsPerCountry)
+    {
+      <a asp-page="/Cities" asp-route-country=@country.Key class="text-decoration-none">
+        <div class="col">
+          <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+            style="background-image: url('./img/unsplash-photo-3.jpg');">
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+              <h3 class="pt-1 mt-1 mb-4 display-6 lh-1 fw-bold">@country.Key</h3>
+              <p class="fs-5">@country.Value friends</p>
+            </div>
+          </div>
+        </div>
+      </a>
+    }
+  </div>
+
+  <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+
+    @foreach (var country in Model.Countries)
+    {
+      <a asp-page="/Cities" asp-route-country=@country class="text-decoration-none">
+        <div class="col">
+          <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+            style="background-image: url('./img/unsplash-photo-3.jpg');">
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+              <h3 class="pt-1 mt-1 mb-4 display-6 lh-1 fw-bold">@country</h3>
+              
+            </div>
+          </div>
+        </div>
+      </a>
+    }
+  </div>
+
+</div>
