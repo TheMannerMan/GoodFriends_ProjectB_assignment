@@ -59,54 +59,112 @@
         <a asp-page="/EditFriendDetails" asp-route-friendId="@Model.Friend.FriendId"
           class="w-100 btn btn-primary btn-lg my-4">Edit friend details</a>
       </form>
-    </div>
+    
 
+    <form method="post" class="needs-validation" novalidate>
+      <input type="hidden" name="id" data-seido-selected-item-id-target />
+      <input type="hidden" asp-for="FriendId">
+      <div class="col-md-7 col-lg-8">
 
-    <div class="col-md-7 col-lg-8">
-      <h3 class="pb-2">My friend's pets
-        <a href="#add-edit-pet" class="btn btn-success btn-sm" type="button">Add</a>
-      </h3>
-      @foreach (var pet in @Model.Friend.Pets)
-      {
-
-        if (pet == null)
+        <h3 class="pb-2">My friend's pets
+          <a href="#add-edit-pet" class="btn btn-success btn-sm d-none" type="button">Add</a>
+        </h3>
+        @foreach (var pet in @Model.Friend.Pets)
         {
+
+          if (pet == null)
+          {
+            <div class="row mb-2 text-center">
+              <div class="col-md-10 themed-grid-col">Unknown pet</div>
+            </div>
+            continue; // Hoppa över resten av loopen för detta objekt
+          }
+
           <div class="row mb-2 text-center">
-            <div class="col-md-10 themed-grid-col">Unknown pet</div>
+            <div class="col-md-10 themed-grid-col">@pet.Name the @pet.Mood @pet.Kind</div>
+            <div class="col-md-2 themed-grid-col">
+              <!--<a href="#add-edit-pet" class="btn btn-secondary btn-sm" type="button">Edit</a> 
+              <a href="#modals" class="btn btn-danger btn-sm" type="button">Delete</a>-->
+              <button type="button"  class="btn btn-danger btn-sm"
+                      data-seido-selected-item-id="@pet.PetId"
+                      data-bs-toggle="modal" data-bs-target="#deletePetModal"
+                      data-seido-modal-title="@pet.PetId"
+                        data-seido-modal-body="About to delete @pet.Name with id: @pet.PetId"
+                        data-seido-modal-cancel="Close" 
+                        data-seido-modal-Ok="Delete">
+              Delete</button>
+            </div>
           </div>
-          continue; // Hoppa över resten av loopen för detta objekt
         }
 
-        <div class="row mb-2 text-center">
-          <div class="col-md-10 themed-grid-col">@pet.Name the @pet.Mood @pet.Kind</div>
-          <div class="col-md-2 themed-grid-col">
-            <a href="#add-edit-pet" class="btn btn-secondary btn-sm" type="button">Edit</a>
-            <a href="#modals" class="btn btn-danger btn-sm" type="button">Delete</a>
+      </div>
+
+
+      <div class="col-md-7 col-lg-8">
+        <h3 class="pb-2">My friend's favorite quotes
+          <a href="#list-of-quotes" class="btn btn-success btn-sm d-none" type="button">Add</a>
+        </h3>
+        @foreach (var quote in @Model.Friend.Quotes)
+        {
+          <input type="hidden" name="petId" id="petId">
+
+          <div class="row mb-2 text-center">
+            <div class="col-md-10 themed-grid-col">
+              @quote.QuoteText
+              <div class="col-md-16  text-end">@quote.Author</div>
+            </div>
+            <div class="col-md-2 themed-grid-col">
+              
+              <button type="button"  class="btn btn-danger btn-sm"
+                      data-seido-selected-item-id="@quote.QuoteId"
+                      data-bs-toggle="modal" data-bs-target="#deleteQuoteModal"
+                      data-seido-modal-title="@quote.QuoteId"
+                        data-seido-modal-body="About to delete @quote.QuoteText with id: @quote.QuoteId"
+                        data-seido-modal-cancel="Close" 
+                        data-seido-modal-Ok="Delete">
+              Delete</button>
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <div class="modal fade" id="deletePetModal" tabindex="-1" aria-labelledby="deletePetModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-danger" id="deletePetModal">Confirm deletion</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" asp-page-handler="DeletePet" class="btn btn-primary btn-danger">Delete</button>
+            </div>
           </div>
         </div>
-      } 
+      </div>
 
-
-    </div>
-
-
-    <div class="col-md-7 col-lg-8">
-      <h3 class="pb-2">My friend's favorite quotes
-        <a href="#list-of-quotes" class="btn btn-success btn-sm" type="button">Add</a>
-      </h3>
-      @foreach (var quote in @Model.Friend.Quotes)
-      {
-        <div class="row mb-2 text-center">
-          <div class="col-md-10 themed-grid-col">
-            @quote.QuoteText
-            <div class="col-md-16  text-end">@quote.Author</div>
-          </div>
-          <div class="col-md-2 themed-grid-col">
-            <a href="#modals" class="btn btn-danger btn-sm" type="button">Delete</a>
+      <div class="modal fade" id="deleteQuoteModal" tabindex="-1" aria-labelledby="deleteQuoteModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-danger" id="deleteQuoteModal">Confirm deletion</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" asp-page-handler="DeleteQuote" class="btn btn-primary btn-danger">Delete</button>
+            </div>
           </div>
         </div>
-      }
-
+      </div>
+    </form>
     </div>
   </div>
 </div>
