@@ -1,6 +1,8 @@
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models;
 using Models.DTO;
@@ -14,47 +16,18 @@ namespace MyApp.Namespace
 
         [BindProperty]
         public FriendIM FriendInputModel { get; set; }
-        [BindProperty]
+        
         public string PageHeader { get; set; }
         public string ErrorMessage { get; set; } = null;
 
-        public async Task<IAddress> UpdateAddress(IAddress address)
+        //For Server Side Validation set by IsValid()
+        public bool HasValidationErrors { get; set; }
+        public IEnumerable<string> ValidationErrorMsgs { get; set; }
+        public IEnumerable<KeyValuePair<string, ModelStateEntry>> InvalidKeys { get; set; }
+
+        public EditFriendDetailsModel(IFriendsService service)
         {
-            IAddress test;
-            if (new AddressIM(address).Equals(FriendInputModel.AddressInputModel))
-            { // Control if changes on address.
-                return address;
-            }
-
-            int _pageSize = 1000;
-            var resultOfFilteredAddresses = await _service.ReadAddressesAsync(true, false, FriendInputModel.AddressInputModel.City, _pageSize, 0);
-
-            // If pagesize is smaller the DbItemsCount, it means that not all addresses were loaded from the service. We fix it with a call on the service with the exact amount of objects.
-            if (resultOfFilteredAddresses.DbItemsCount > _pageSize)
-            {
-                _pageSize = resultOfFilteredAddresses.DbItemsCount;
-                resultOfFilteredAddresses = await _service.ReadAddressesAsync(true, false, FriendInputModel.AddressInputModel.City, _pageSize, 0);
-            }
-
-            // If the entered address exist in database, return it. Otherwise create a new address.
-            var returnedItem = resultOfFilteredAddresses.PageItems.FirstOrDefault
-            (a => a.Country == address.Country && a.ZipCode == address.ZipCode && a.StreetAddress == address.StreetAddress);
-
-            if (returnedItem != null)
-            {
-                return returnedItem;
-            }
-
-            else
-            {
-                
-                IAddress newAddress = FriendInputModel.AddressInputModel.CreateNewAddress(address);
-                var dtoAddress = new AddressCUdto(newAddress);
-                dtoAddress.AddressId = null;
-                IAddress testtest = await _service.CreateAddressAsync(dtoAddress);
-                return testtest;
-
-            }
+            _service = service;
         }
 
         public async Task<IActionResult> OnGet()
@@ -83,12 +56,6 @@ namespace MyApp.Namespace
             }
             return Page();
         }
-
-        public EditFriendDetailsModel(IFriendsService service)
-        {
-            _service = service;
-        }
-
         public async Task<IActionResult> OnPostUndo()
         {
             //Use the Service and populate the InputModel
@@ -99,6 +66,15 @@ namespace MyApp.Namespace
 
         public async Task<IActionResult> OnPostSave()
         {
+
+            PageHeader = (FriendInputModel.StatusIM == StatusIM.Inserted) ?
+                            "Create a new quote" : "Edit details of a quote";
+
+            if (!IsValid())
+            {
+                //The page is not valid
+                return Page();
+            }
 
             //Use the Service and populate the InputModel
             if (FriendInputModel.StatusIM == StatusIM.Inserted)
@@ -118,10 +94,9 @@ namespace MyApp.Namespace
 
                 IFriend model = await _service.ReadFriendAsync(FriendInputModel.FriendId, false);
                 model = FriendInputModel.UpdateModel(model);
-                
+
 
                 IAddress relevantAddress = await UpdateAddress(model.Address); // kan man skicka in id enbart?
-                //model.Address = 
                 var dtoFriend = new FriendCUdto(model);
                 dtoFriend.AddressId = relevantAddress.AddressId;
                 try
@@ -133,7 +108,7 @@ namespace MyApp.Namespace
                     ErrorMessage = e.Message;
                 }
 
-                return RedirectToPage("/FriendDetails", new { id = model.FriendId });
+                //return RedirectToPage("/FriendDetails", new { id = model.FriendId });
 
                 /*
                 model = FriendInputModel.UpdateModel(model);
@@ -147,6 +122,50 @@ namespace MyApp.Namespace
 
             return RedirectToPage("/FriendDetails", new { id = FriendInputModel.FriendId });
 
+        }
+
+        public async Task<IAddress> UpdateAddress(IAddress address)
+        {
+            IAddress test;
+            var tempAddress = new AddressIM(address);
+            bool isEqual = tempAddress.Equals(FriendInputModel.AddressInputModel);
+            if (isEqual){
+                return address;
+            }
+            /*if (new AddressIM(address).Equals(FriendInputModel.AddressInputModel))
+            { // Control if changes on address.
+                return address;
+            }*/
+
+            int _pageSize = 1000;
+            var resultOfFilteredAddresses = await _service.ReadAddressesAsync(true, false, FriendInputModel.AddressInputModel.City, 0, _pageSize);
+
+            // If pagesize is smaller the DbItemsCount, it means that not all addresses were loaded from the service. We fix it with a call on the service with the exact amount of objects.
+            if (resultOfFilteredAddresses.DbItemsCount > _pageSize)
+            {
+                _pageSize = resultOfFilteredAddresses.DbItemsCount;
+                resultOfFilteredAddresses = await _service.ReadAddressesAsync(true, false, FriendInputModel.AddressInputModel.City, _pageSize, 0);
+            }
+
+            // If the entered address exist in database, return it. Otherwise create a new address.
+            var returnedItem = resultOfFilteredAddresses.PageItems.FirstOrDefault
+            (a => a.Country == FriendInputModel.AddressInputModel.Country && a.ZipCode == FriendInputModel.AddressInputModel.ZipCode && a.StreetAddress == FriendInputModel.AddressInputModel.StreetAddress);
+
+            if (returnedItem != null)
+            {
+                return returnedItem; // vad händer här, verkar inte sätta rätt adress.
+            }
+
+            else
+            {
+
+                IAddress newAddress = FriendInputModel.AddressInputModel.CreateNewAddress(address);
+                var dtoAddress = new AddressCUdto(newAddress);
+                dtoAddress.AddressId = null;
+                IAddress testtest = await _service.CreateAddressAsync(dtoAddress);
+                return testtest;
+
+            }
         }
 
         #region Input Model
@@ -165,7 +184,7 @@ namespace MyApp.Namespace
             public string City { get; set; }
             public string Country { get; set; }
 
-            public bool Equals(Address other) => (other != null) && ((this.StreetAddress, this.ZipCode, this.City, this.Country) ==
+            public bool Equals(AddressIM other) => (other != null) && ((this.StreetAddress, this.ZipCode, this.City, this.Country) ==
         (other.StreetAddress, other.ZipCode, other.City, other.Country));
 
             public AddressIM()
@@ -273,6 +292,23 @@ namespace MyApp.Namespace
         }
         #endregion
 
+        #region Server Side Validation
+        private bool IsValid(string[] validateOnlyKeys = null)
+        {
+            InvalidKeys = ModelState
+               .Where(s => s.Value.ValidationState == ModelValidationState.Invalid);
+
+            if (validateOnlyKeys != null)
+            {
+                InvalidKeys = InvalidKeys.Where(s => validateOnlyKeys.Any(vk => vk == s.Key));
+            }
+
+            ValidationErrorMsgs = InvalidKeys.SelectMany(e => e.Value.Errors).Select(e => e.ErrorMessage);
+            HasValidationErrors = InvalidKeys.Any();
+
+            return !HasValidationErrors;
+        }
+        #endregion
 
     }
 
