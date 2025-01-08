@@ -57,7 +57,7 @@
                 <div class="col-md-16">Quotes: @friend.Quotes.Count</div>
             </div>
             <div class="col-md-2 themed-grid-col">
-                <a asp-page="/FriendDetails" asp-route-id=@friend.FriendId class="btn btn-primary btn-sm"
+                <a asp-controller="Friend" asp-action="Index" asp-route-id=@friend.FriendId class="btn btn-primary btn-sm"
                     type="button">View</a>
                 <a asp-page="/EditFriendDetails" asp-route-friendId="@friend.FriendId" class="btn btn-secondary btn-sm"
                     type="button">Edit</a>
