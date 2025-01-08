@@ -38,6 +38,12 @@ namespace AppGoodFriendsMVC.Controllers
             return View("EditFriend", vm);
         }
 
+        public async Task<IActionResult> Undo(EditFriendViewModel vm)
+        {
+            vm.FriendInputModel = new FriendIM(await _service.ReadFriendAsync(vm.FriendInputModel.FriendId, false));
+            return View("EditFriend", vm);
+        }
+
         [HttpPost]
         public async Task<IActionResult> DeletePet(Guid id, FriendViewModel vm)
         {
