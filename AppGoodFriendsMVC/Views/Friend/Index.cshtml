@@ -58,6 +58,8 @@
 
         <a asp-controller="Friend" asp-action="EditFriend" asp-route-id="@Model.Friend.FriendId"
           class="w-100 btn btn-primary btn-lg my-4">Edit friend details</a>
+          <a asp-controller="FriendsList" asp-action="Search" asp-route-country="@Model.Friend.Address.Country" asp-route-city="@Model.Friend.Address.City"
+          class="w-100 btn btn-primary btn-lg my-4">Back to Friends list</a>
       </form>
     
 

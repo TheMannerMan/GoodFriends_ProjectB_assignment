@@ -20,7 +20,7 @@ namespace AppGoodFriendsMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(int totalNumberOfFriends, string country, string city)
+        public async Task<IActionResult> Search(string country, string city, int totalNumberOfFriends = 0)
         {
             var vwm = new SearchViewModel()
             {

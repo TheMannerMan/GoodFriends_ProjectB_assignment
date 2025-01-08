@@ -119,10 +119,10 @@
 
 
 
-        <button class="w-100 btn btn-primary btn-lg my-4" type="submit" asp-page-handler="Save">Save</button>
+        <button class="w-100 btn btn-primary btn-lg my-4" type="submit" asp-controller="Friend" asp-action="Save">Save</button>
         @if (Model.FriendInputModel.StatusIM != AppGoodFriendsMVC.Models.StatusIM.Inserted)
         {
-          <button class="w-100 btn btn-primary btn-lg my-4" type="submit" asp-page-handler="Undo">Undo</button>
+          <button class="w-100 btn btn-primary btn-lg my-4" type="submit" asp-controller="Friend" asp-action="Undo">Undo</button>
         }
 
       </form>

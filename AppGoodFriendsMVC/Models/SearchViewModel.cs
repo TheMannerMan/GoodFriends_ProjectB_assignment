@@ -18,7 +18,7 @@ namespace AppGoodFriendsMVC.Models
 
         [BindProperty(SupportsGet = true)]
         public int TotalNumberOfFriends { get; set; }
-        
+
         public List<IFriend> AllFriends { get; set; }
         public List<IFriend> FriendsPerPage { get; set; }
 
@@ -45,7 +45,24 @@ namespace AppGoodFriendsMVC.Models
 
         public async Task LoadFriendsAsync(IFriendsService _service)
         {
-            var allAddresses = await _service.ReadAddressesAsync(true, false, City, 0, TotalNumberOfFriends);
+            global::Models.DTO.ResponsePageDto<IAddress> allAddresses;
+
+            if (TotalNumberOfFriends == 0) // The default parameter value for TotalNumberOfFriends is 0. To catch all addresses the following logic is used.
+            {
+                allAddresses = await _service.ReadAddressesAsync(true, false, City, 0, 100);
+
+                if (allAddresses.DbItemsCount > 100)
+                {
+                    allAddresses = await _service.ReadAddressesAsync(true, false, City, 0, allAddresses.DbItemsCount);
+                }
+            }
+
+            else
+            {
+                allAddresses = await _service.ReadAddressesAsync(true, false, City, 0, TotalNumberOfFriends);
+            }
+
+
             AllFriends = allAddresses.PageItems.SelectMany(a => a.Friends).ToList();
 
             if (!string.IsNullOrWhiteSpace(SearchFilter))
@@ -62,7 +79,7 @@ namespace AppGoodFriendsMVC.Models
 
         public SearchViewModel()
         {
-            
+
         }
     }
 }

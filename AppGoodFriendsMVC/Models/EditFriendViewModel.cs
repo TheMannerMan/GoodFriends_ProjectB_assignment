@@ -14,7 +14,7 @@ namespace AppGoodFriendsMVC.Models
 
         //For Server Side Validation set by IsValid()
         public bool HasValidationErrors { get; set; }
-        public IEnumerable<string> ValidationErrorMsgs { get; set; }
-        public IEnumerable<KeyValuePair<string, ModelStateEntry>> InvalidKeys { get; set; }
+        public IEnumerable<string>? ValidationErrorMsgs { get; set; }
+        public IEnumerable<KeyValuePair<string, ModelStateEntry>>? InvalidKeys { get; set; }
     }
 }
