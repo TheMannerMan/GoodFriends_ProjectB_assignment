@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGoodFriendsRazor", "AppGoodFriendsRazor\AppGoodFriendsRazor.csproj", "{88684172-D60B-4DE4-962C-A0501E8C05AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGoodFriendsMVC", "AppGoodFriendsMVC\AppGoodFriendsMVC.csproj", "{1A835728-A0DD-4B42-A15B-30D658D8ED5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{88684172-D60B-4DE4-962C-A0501E8C05AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88684172-D60B-4DE4-962C-A0501E8C05AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88684172-D60B-4DE4-962C-A0501E8C05AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A835728-A0DD-4B42-A15B-30D658D8ED5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A835728-A0DD-4B42-A15B-30D658D8ED5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A835728-A0DD-4B42-A15B-30D658D8ED5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A835728-A0DD-4B42-A15B-30D658D8ED5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
