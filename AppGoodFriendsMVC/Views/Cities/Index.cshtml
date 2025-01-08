@@ -27,7 +27,7 @@
                 <div>
                     <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">@city.Key</h3>
                     <p>@city.Value.FriendsCount friends and @city.Value.PetsCount pets.</p>
-                    <a asp-page="/FriendsList" asp-route-Country=@Model.Country asp-route-City=@city.Key asp-route-TotalNumberOfFriends='@city.Value.FriendsCount' class="btn btn-primary">
+                    <a asp-controller="FriendsList" asp-action="Search" asp-route-Country=@Model.Country asp-route-City=@city.Key asp-route-TotalNumberOfFriends='@city.Value.FriendsCount' class="btn btn-primary">
                         See friends
                     </a>
                 </div>
