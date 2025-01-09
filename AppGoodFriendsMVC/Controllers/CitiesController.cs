@@ -38,7 +38,7 @@ namespace AppGoodFriendsMVC.Controllers
                 );
                 vm.Country = country;
 
-            //ViewData["Country"] = country;
+            
             return View(vm);
         }
     }

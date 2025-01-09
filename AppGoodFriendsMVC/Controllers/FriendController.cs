@@ -115,15 +115,12 @@ namespace AppGoodFriendsMVC.Controllers
         {
             IAddress test;
             var tempAddress = new AddressIM(address);
+
+            // If no changes have been done, then they are equal.
             bool isEqual = tempAddress.Equals(vm.FriendInputModel.AddressInputModel);
             if (isEqual){
                 return address;
             }
-            /*if (new AddressIM(address).Equals(FriendInputModel.AddressInputModel))
-            { // Control if changes on address.
-                return address;
-            }*/
-
             int _pageSize = 1000;
             var resultOfFilteredAddresses = await _service.ReadAddressesAsync(true, false, vm.FriendInputModel.AddressInputModel.City, 0, _pageSize);
 
@@ -140,7 +137,7 @@ namespace AppGoodFriendsMVC.Controllers
 
             if (returnedItem != null)
             {
-                return returnedItem; // vad händer här, verkar inte sätta rätt adress.
+                return returnedItem;
             }
 
             else
