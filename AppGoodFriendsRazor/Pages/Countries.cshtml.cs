@@ -39,7 +39,6 @@ namespace MyApp.Namespace
             return Page();
         }
 
-
         public CountriesModel(IFriendsService service)
         {
             _service = service;

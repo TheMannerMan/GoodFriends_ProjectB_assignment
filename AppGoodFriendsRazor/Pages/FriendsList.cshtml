@@ -6,15 +6,13 @@
 <div class="container px-4 py-4" id="list-of-friends">
     <h2 class="pb-2 border-bottom">List of friends</h2>
 
-    <p>These are my friends. You can seach by name or address. You can also view or edit all the details. Sad but
-        possible, if you have the right authorization you
-        could also remove a friened from my database. More fun is it to add a friend, which all my friends can do.</p>
+    <p>These are my friends. You can search by name or address. You can also view or edit all the details.</p>
     <div class="row mb-1 text-center">
         <div class="col-md-8 ">
             <form class="d-flex mt-3 mt-lg-0" role="search" method="post">
                 <input type="hidden" asp-for="City">
-<input type="hidden" asp-for="Country">
-<input type="hidden" asp-for="TotalNumberOfFriends">
+                <input type="hidden" asp-for="Country">
+                <input type="hidden" asp-for="TotalNumberOfFriends">
                 <input asp-for="SearchFilter" class="form-control me-2" type="search" placeholder="Search"
                     aria-label="Search">
                 <button asp-page-handler="Search" class="btn btn-outline-success" type="submit">Search</button>
@@ -23,10 +21,6 @@
     </div>
 
     <form method="post">
-<!--<input type="hidden" asp-for="SearchFilter">
-<input type="hidden" asp-for="City">
-<input type="hidden" asp-for="Country">
-<input type="hidden" asp-for="TotalNumberOfFriends"> -->
 
 <div class="row mb-2 text-center">
         <div class="col-md-4 themed-grid-col">Name</div>
@@ -80,9 +74,6 @@
                 </a>
             </li>
 
-
-
-
             @for (int i = 1; i <= @Model.NrOfPages; i++)
             {
                 <li class="page-item @(Model.ThisPageNr == (i - 1) ? "active" : "")">
@@ -91,6 +82,7 @@
                         asp-route-TotalNumberOfFriends="@Model.TotalNumberOfFriends" asp-route-SearchFilter="@Model.SearchFilter">@i</a>
                 </li>
             }
+
             <li class="page-item">
                 <a class="page-link" asp-page="/FriendsList" asp-route-ThisPageNr="@Model.NextPageNr"
                     asp-route-Country="@Model.Country" asp-route-City="@Model.City"
@@ -102,18 +94,4 @@
     </nav>
 
 
-</div>
-
-<div class="d-none">
-    @for (int i = 1; i <= @Model.NrOfPages; i++)
-    {
-        <li class="page-item"><a class="page-link" asp-page="/FriendsList" asp-route-pagenr="@(i-1)"
-                asp-route-country="@Model.Country" asp-route-city="@Model.City">@i</a></li>
-    }
-    <li class="page-item">
-        <a class="page-link" asp-page="/FriendsList" asp-route-pagenr="@Model.NextPageNr"
-            asp-route-country="@Model.Country" asp-route-city="@Model.City" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-        </a>
-    </li>
 </div>

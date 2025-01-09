@@ -35,6 +35,11 @@ namespace MyApp.Namespace
         public int PrevPageNr { get; set; } = 0;
         public int NextPageNr { get; set; } = 0;
 
+        public FriendsListModel(IFriendsService service)
+        {
+            _service = service;
+        }
+
 
         public async Task<IActionResult> OnGet()
         {
@@ -69,6 +74,7 @@ namespace MyApp.Namespace
                     .ToList();
             }
         }
+
         private void UpdatePagination()
         {
             NrOfPages = (int)Math.Ceiling((double)AllFriends.Count / PageSize);
@@ -76,10 +82,6 @@ namespace MyApp.Namespace
             NextPageNr = Math.Min(NrOfPages - 1, ThisPageNr + 1);
             //PresentPages = Math.Min(3, NrOfPages);
             FriendsPerPage = AllFriends.Skip(ThisPageNr * PageSize).Take(PageSize).ToList<IFriend>();
-        }
-        public FriendsListModel(IFriendsService service)
-        {
-            _service = service;
         }
     }
 }

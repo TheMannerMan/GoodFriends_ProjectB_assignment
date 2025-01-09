@@ -17,8 +17,8 @@ namespace MyApp.Namespace
         [BindProperty]
         public FriendIM FriendInputModel { get; set; }
 
-        public string PageHeader { get; set; }
-        public string ErrorMessage { get; set; } = null;
+        // public string PageHeader { get; set; } // Implement in future if add is implemented
+        public string ErrorMessage { get; set; } = null; // Not implemented at the moment.
 
         //For Server Side Validation set by IsValid()
         public bool HasValidationErrors { get; set; }
@@ -40,14 +40,11 @@ namespace MyApp.Namespace
                     //Use the Service and populate the InputModel
                     FriendInputModel = new FriendIM(await _service.ReadFriendAsync(_id, false));
 
-                    PageHeader = "Edit details of a friend";
+                    // PageHeader = "Edit details of a friend";
                 }
                 else
                 {
-                    /* FÅ edit att fungera först
-                    FriendInputModel = new FriendIM();
-                    FriendInputModel.StatusIM = StatusIM.Inserted;
-                    PageHeader = "Add a new friend"; */
+                    // Use if add a friend is implemented in future 
                 }
             }
             catch (Exception e)
@@ -60,15 +57,14 @@ namespace MyApp.Namespace
         {
             //Use the Service and populate the InputModel
             FriendInputModel = new FriendIM(await _service.ReadFriendAsync(FriendInputModel.FriendId, false));
-            PageHeader = "Edit details of a quote";
+            // PageHeader = "Edit details of a quote"; // Not implemented at current version
             return Page();
         }
 
         public async Task<IActionResult> OnPostSave()
         {
 
-            PageHeader = (FriendInputModel.StatusIM == StatusIM.Inserted) ?
-                            "Create a new quote" : "Edit details of a quote";
+            //PageHeader = (FriendInputModel.StatusIM == StatusIM.Inserted) ? "Create a new quote" : "Edit details of a quote"; // Not implemented at current version
 
             if (!IsValid())
             {
@@ -79,18 +75,10 @@ namespace MyApp.Namespace
             //Use the Service and populate the InputModel
             if (FriendInputModel.StatusIM == StatusIM.Inserted)
             {
-                /* Detta avser en ny. Skapa redigering av befintlig först
-                var model = FriendInputModel.UpdateModel(new csFriend());
-                var dtoFriend = new FriendCUdto(model);
-                model = await _service.CreateFriendAsync(dtoFriend);
-                FriendInputModel = new FriendIM(model);
-
-                return Page(); */
+                // Implement in future if Add a friend is implemented.
             }
             else
             {
-
-                //var tempAddress = new AddressIM(new FriendIM(await _service.ReadFriendAsync(FriendInputModel.FriendId, false)).AddressInputModel);
 
                 IFriend model = await _service.ReadFriendAsync(FriendInputModel.FriendId, false);
                 model = FriendInputModel.UpdateModel(model);
@@ -107,17 +95,6 @@ namespace MyApp.Namespace
                 {
                     ErrorMessage = e.Message;
                 }
-
-                //return RedirectToPage("/FriendDetails", new { id = model.FriendId });
-
-                /*
-                model = FriendInputModel.UpdateModel(model);
-                IAddress modelAddress = await UpdateAddress(model.Address);
-                model.Address = modelAddress;
-                var dtoFriend = new FriendCUdto(model);
-                model = await _service.UpdateFriendAsync(dtoFriend); */
-                //FriendInputModel = new FriendIM(model);
-
             }
 
             return RedirectToPage("/FriendDetails", new { id = FriendInputModel.FriendId });
@@ -128,15 +105,13 @@ namespace MyApp.Namespace
         {
             IAddress test;
             var tempAddress = new AddressIM(address);
+
+            // If no changes has been done to the address, then they are equal. Return address.
             bool isEqual = tempAddress.Equals(FriendInputModel.AddressInputModel);
             if (isEqual)
             {
                 return address;
             }
-            /*if (new AddressIM(address).Equals(FriendInputModel.AddressInputModel))
-            { // Control if changes on address.
-                return address;
-            }*/
 
             int _pageSize = 1000;
             var resultOfFilteredAddresses = await _service.ReadAddressesAsync(true, false, FriendInputModel.AddressInputModel.City, 0, _pageSize);
@@ -157,7 +132,7 @@ namespace MyApp.Namespace
                 return returnedItem; // vad händer här, verkar inte sätta rätt adress.
             }
 
-            else
+            else // Create a new address and add it to the database.
             {
 
                 IAddress newAddress = FriendInputModel.AddressInputModel.CreateNewAddress(address);

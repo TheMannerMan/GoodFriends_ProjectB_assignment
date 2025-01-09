@@ -8,9 +8,8 @@ namespace MyApp.Namespace
     public class FriendDetailsModel : PageModel
     {
         private readonly IFriendsService _service;
-        public string? ErrorMessage { get; set; } = null;
+        //public string? ErrorMessage { get; set; } = null; //Use in Error handling if implemented in future
 
-        //Skapa input model?
         public IFriend Friend { get; set; }
 
         [BindProperty]
@@ -28,7 +27,7 @@ namespace MyApp.Namespace
             }
             catch (Exception e)
             {
-                ErrorMessage = e.Message;
+                // ErrorMessage = e.Message; //Use in Error handling if implemented in future
             }
             return Page();
         }
@@ -45,7 +44,7 @@ namespace MyApp.Namespace
             }
             catch (Exception e)
             {
-                ErrorMessage = e.Message;
+                //ErrorMessage = e.Message; //Use in Error handling if implemented in future
             }
             return Page();
         }
@@ -62,7 +61,7 @@ namespace MyApp.Namespace
             }
             catch (Exception e)
             {
-                ErrorMessage = e.Message;
+                // ErrorMessage = e.Message; //Use in Error handling if implemented in future
             }
             return Page();
         }
