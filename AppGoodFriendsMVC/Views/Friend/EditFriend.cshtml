@@ -2,8 +2,6 @@
 @{
 }
 
-<p>Hello</p>
-
 <div class="container px-4 py-4" id="add-edit-friend">
   <h2 class="pb-2 border-bottom">Add or edit a friend's details</h2>
   <p></p>
@@ -37,9 +35,9 @@
             <input type="text" class="form-control" id="firstName" placeholder=""
               value="@Model.FriendInputModel.FirstName" asp-for="FriendInputModel.FirstName" required>
             <span asp-validation-for="FriendInputModel.FirstName" class="invalid-feedback"></span>
-            <!---<div class="invalid-feedback">
+            <div class="invalid-feedback">
                 Valid first name is required
-              </div> -->
+              </div>
           </div>
 
           <div class="col-sm-6">
@@ -67,12 +65,6 @@
             <input type="date" class="form-control" id="birthday"
               value='@(Model.FriendInputModel.Birthday.HasValue ? Model.FriendInputModel.Birthday.Value.ToString("yyyy-MM-dd") : "")'
               asp-for="FriendInputModel.Birthday">
-          </div>
-
-          <div class="col-sm-6">
-            <label class="form-check-label" for="userHasAddress"></label>
-            <input class="form-check-input" type="checkbox" value="" id="userHasAddress">
-            I know the address
           </div>
 
           <div class="row g-3 visible">
@@ -124,6 +116,7 @@
         {
           <button class="w-100 btn btn-primary btn-lg my-4" type="submit" asp-controller="Friend" asp-action="Undo">Undo</button>
         }
+        <a class="w-100 btn btn-primary btn-lg my-4" asp-controller="Friend" asp-action="Index" asp-route-id="@Model.FriendInputModel.FriendId">Back</a>
 
       </form>
     </div>

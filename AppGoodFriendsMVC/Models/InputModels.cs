@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Models;
@@ -13,6 +14,8 @@ namespace AppGoodFriendsMVC.Models
         public StatusIM StatusIM { get; set; }
         public Guid AddressId { get; init; } // Guid.NewGuid();
         public string StreetAddress { get; set; }
+        
+        [RegularExpression(@"^\d+$", ErrorMessage = "Zip code must contain only numbers")]
         public int ZipCode { get; set; }
         public string City { get; set; }
         public string Country { get; set; }

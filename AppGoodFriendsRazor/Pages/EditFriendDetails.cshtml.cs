@@ -180,6 +180,7 @@ namespace MyApp.Namespace
             public StatusIM StatusIM { get; set; }
             public Guid AddressId { get; init; } // Guid.NewGuid();
             public string StreetAddress { get; set; }
+            [RegularExpression(@"^\d+$", ErrorMessage = "Zip code must contain only numbers")]
             public int ZipCode { get; set; }
             public string City { get; set; }
             public string Country { get; set; }
