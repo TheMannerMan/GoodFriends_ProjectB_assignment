@@ -13,11 +13,18 @@ namespace AppGoodFriendsMVC.Models
     {
         public StatusIM StatusIM { get; set; }
         public Guid AddressId { get; init; } // Guid.NewGuid();
+
+        [Required(ErrorMessage = "Street address is required")]
         public string StreetAddress { get; set; }
         
+        [Required(ErrorMessage = "Zipcode is required")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Zip code must contain only numbers")]
         public int ZipCode { get; set; }
+        
+        [Required(ErrorMessage = "City is required")]
         public string City { get; set; }
+
+        [Required(ErrorMessage = "Country is required")]
         public string Country { get; set; }
 
         public bool Equals(AddressIM other) => (other != null) && ((this.StreetAddress, this.ZipCode, this.City, this.Country) ==
@@ -79,8 +86,11 @@ namespace AppGoodFriendsMVC.Models
 
         //Properties from Model which is to be edited in the <form>
         public Guid FriendId { get; init; } = Guid.NewGuid();
+        [Required(ErrorMessage = "First name is required")]
         public string FirstName { get; set; }
+        [Required(ErrorMessage = "Last name is required")]
         public string LastName { get; set; }
+        [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
         public DateTime? Birthday { get; set; }
         public AddressIM AddressInputModel { get; set; }
