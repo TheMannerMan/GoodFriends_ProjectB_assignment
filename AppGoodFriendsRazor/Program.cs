@@ -33,6 +33,13 @@ builder.Services.AddScoped<IFriendsService, FriendsServiceDb>();
 //Used for Identity email verification
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailService>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/Login";
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
