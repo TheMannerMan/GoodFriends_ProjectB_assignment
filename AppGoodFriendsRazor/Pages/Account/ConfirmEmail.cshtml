@@ -1,0 +1,40 @@
+﻿@page
+@model AppMusicRazor.Pages.Account.ConfirmEmailModel
+@{
+    ViewData["Title"] = "Email Confirmation";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@attribute [IgnoreAntiforgeryToken]
+    <!-- Member register page -->
+<div class="container px-4 py-4" id="register">
+    <h2 class="pb-2 border-bottom">Email Confirmation</h2>
+    @if (Model.ValidationResult.HasErrors)
+    {
+        <div class="row g-3">
+            @foreach (var item in Model.ValidationResult.ErrorMsgs)
+            {
+                <span class="alert alert-danger" role="alert">
+                    @item
+                </span>
+            }
+        </div>
+        <div class="bg-body-tertiary p-5 rounded">
+            <div class="col-sm-8 py-5 mx-auto">
+                <p class="fs-5">
+                    We had a problem with you email confirmation. Another confirmation email has been sent.
+                </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="bg-body-tertiary p-5 rounded">
+            <div class="col-sm-8 py-5 mx-auto">
+                <p class="fs-5">
+                    Thank you. Your email is now confirmed and you can login.
+                </p>
+            </div>
+        </div>
+    }
+</div>
+

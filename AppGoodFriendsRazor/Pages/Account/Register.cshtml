@@ -1,0 +1,130 @@
+﻿@page
+@model AppMusicRazor.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@attribute [IgnoreAntiforgeryToken]
+    <!-- Member register page -->
+<div class="container px-4 py-4" id="register">
+    <form class="needs-validation" method="post" novalidate>
+        <h2 class="pb-2 border-bottom">Register yourself</h2>
+
+        <p>If you register yourself you can you can edit the data in the database.</p>
+
+        <!-- Server side validation errors, rough but just in case client side validation is not working or tampered with -->
+        @if (Model.ValidationResult.HasErrors)
+        {
+            <div class="row g-3">
+                @foreach (var item in Model.ValidationResult.ErrorMsgs)
+                {
+                    <span class="alert alert-danger" role="alert">
+                        @item
+                    </span>
+                }
+            </div>
+        }
+
+        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+            <div class="col-md-7 col-lg-8">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="firstName" class="form-label">Firstname</label>
+                        <input type="text" class="form-control" asp-for="UserIM.FirstName" id="firstName" value="@Model.UserIM.FirstName">
+                        <span asp-validation-for="UserIM.FirstName" class="invalid-feedback"></span>
+
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="lastName" class="form-label">Lastname</label>
+                        <input type="text" class="form-control" asp-for="UserIM.LastName" id="lastName" value="@Model.UserIM.LastName">
+                        <span asp-validation-for="UserIM.LastName" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="userEmail" class="form-label">Email</label>
+                        <input type="text" class="form-control" asp-for="UserIM.Email" id="userEmail" value="@Model.UserIM.Email">
+                        <span asp-validation-for="UserIM.Email" class="invalid-feedback"></span>
+                    </div>
+                    <div class="col-sm-6">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="userPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" asp-for="UserIM.Password" id="userPassword">
+                        <span asp-validation-for="UserIM.Password" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" asp-for="UserIM.ConfirmPassword" id="confirmPassword">
+                        <span asp-validation-for="UserIM.ConfirmPassword" class="invalid-feedback"></span>
+                    </div>
+                </div>
+                <button class="w-100 btn btn-primary btn-lg my-4" type="submit">Register</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Template register page -->
+<div class="container px-4 py-4 d-none" id="register">
+    <form class="needs-validation" novalidate>
+        <h2 class="pb-2 border-bottom">TEMPLATE Register yourself</h2>
+
+        <p>If you register yourself you can you can edit the data in the database.</p>
+        <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+            <div class="col-md-7 col-lg-8">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="firstName" class="form-label">Firstname</label>
+                        <input type="text" class="form-control is-invalid" id="firstName" placeholder="" value="" required>
+                        <div class="invalid-feedback">
+                            Firstname is required
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="lastName" class="form-label">Lastname</label>
+                        <input type="text" class="form-control is-invalid" id="lastName" placeholder="" value="" required>
+                        <div class="invalid-feedback">
+                            Lastname is required
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="userEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control is-invalid" id="userEmail" placeholder="" value="" required>
+                        <div class="invalid-feedback">
+                            Email is required
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="userPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control is-invalid" id="userPassword" placeholder="" value="" required>
+                        <div class="invalid-feedback">
+                            Password is required
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control is-invalid" id="confirmPassword" placeholder="" value="" required>
+                        <div class="invalid-feedback">
+                            Passwords do not match
+                        </div>
+                    </div>
+                </div>
+                <button class="w-100 btn btn-primary btn-lg my-4" type="submit">Register</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section script
+{
+    <!-- -->
+    <partial name="_ValidationScriptsPartial" />
+}

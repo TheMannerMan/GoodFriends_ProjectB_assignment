@@ -1,0 +1,9 @@
+From: test@test.com
+Date: Thu, 16 Jan 2025 13:45:43 +0100
+Subject: Confirm your email
+Message-Id: <JESOYSJK5PU4.I1536GDQ8NXF1@mannerpc>
+To: t@t.se
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+
+Please confirm your account by <a href='https://localhost:7076/Account/ConfirmEmail?userId=30ee62fa-26f3-422f-9e81-08dd362bb07c&code=Q2ZESjhCWlNTWFkwTks5QWdNejN0S1VDYkpDZnZQVWxPS1hIczRJcUVTdFpVcElxL0hMRlR6T3B1L3N1anN4bndYK0ViVDdZQSs5LzE5TTZ5RXpOaU1HYi81SG5KUnJxc0doZ0l0MXRCRlVFcFBYaHF2dkM1UE9SZXdHNFhQR0hNOGhLQ0hpUlBIc2ExV2RzeE1xUHU4dm15K3VjTXBxNno3eFNGemhNQVBKZG4yUmd0aUZxY3EzK1EwSzdtWjF6RUIrNndsUlcyU0tKQXBlRENrUzNQWGJldnBKNVBGUk1MbHh0MHBqZkN0ZC9ZQW41SWp2clhHTVlyVC9jUGsrbk9lbDFmZz09'>clicking here</a>.

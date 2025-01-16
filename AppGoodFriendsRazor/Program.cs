@@ -30,6 +30,9 @@ builder.Services.AddSingleton<ILoggerProvider, InMemoryLoggerProvider>();
 builder.Services.AddScoped<FriendsDbRepos>();
 builder.Services.AddScoped<IFriendsService, FriendsServiceDb>();
 
+//Used for Identity email verification
+builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
