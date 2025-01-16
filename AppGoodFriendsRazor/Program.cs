@@ -2,6 +2,7 @@ using Configuration;
 using DbContext;
 using DbRepos;
 using Services;
+using Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,16 @@ builder.Configuration.AddApplicationSecrets("../Configuration/Configuration.cspr
 //use multiple Database connections and their respective DbContexts
 builder.Services.AddDatabaseConnections(builder.Configuration);
 builder.Services.AddDatabaseConnectionsDbContext();
+builder.Services.AddIdentityConnectionsDbContext();
+
+//Add IdentityServices to DbContext.MainDbContext
+builder.Services.AddDefaultIdentity<User>(options => {
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.SignIn.RequireConfirmedAccount = false;
+}).AddEntityFrameworkStores<DbContext.MainDbContext>();
 
 //Inject Custom logger
 builder.Services.AddSingleton<ILoggerProvider, InMemoryLoggerProvider>();
@@ -33,6 +44,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
